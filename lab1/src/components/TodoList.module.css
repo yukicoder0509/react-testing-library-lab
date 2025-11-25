@@ -1,0 +1,6 @@
+/* Restore bullets for the todo list which are removed by the global reset */
+.list {
+  list-style-type: disc;
+  list-style-position: outside;
+  padding-left: 1.25rem; /* give space for the bullet */
+}
