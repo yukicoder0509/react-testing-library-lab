@@ -5,14 +5,24 @@ import type { Todo } from "../types/types";
 
 export default function TodoListPage() {
   const [todoList, setTodoList] = useState<Todo[]>([]);
+  const [errorFetchingTodos, setErrorFetchingTodos] = useState<boolean>(false);
 
   useEffect(() => {
-    getTodoList().then(setTodoList);
+    getTodoList()
+      .then((data) => {
+        setTodoList(data);
+        setErrorFetchingTodos(false);
+      })
+      .catch(() => setErrorFetchingTodos(true));
   }, []);
 
   return (
     <div>
-      <TodoList todoList={todoList} />
+      {errorFetchingTodos ? (
+        <p>Error fetching todo list. Please try again later.</p>
+      ) : (
+        <TodoList todoList={todoList} />
+      )}
     </div>
   );
 }
