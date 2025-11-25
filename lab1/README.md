@@ -1,73 +1,37 @@
-# React + TypeScript + Vite
+# Todo List App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is an application that allow user to login and see the todo list.
 
-Currently, two official plugins are available:
+Enter the root page is a login form (composed with components `<LoginForm>` and `<LoginPage>`). User can login with default account:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+Username: username
+Password: password
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+![alt text](login.png)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+After logged in, a todo list will be shown (composed with components `<TodoList>` and `<TodoListPage>`). The data type of todo is defined in `/src/types/types.ts`.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+![alt text](todolist.png)
+
+## Exercise 1: Complete Login Flow
+
+Component under test: `/src/components/LoginForm.tsx`
+
+Test file: `/src/components/LoginForm.test.tsx`
+
+1. Correctly render the login form with input fields.
+2. Simulate typing username and password; the input should be displayed correctly.
+3. Clicking submit should call the login function.
+4. On successful login, it should redirect to the `/todo` page.
+5. On failed login, it should not redirect to the `/todo` page, and an error message should be output to the console.
+
+## Exercise 2: Ensure Todo List Displays Correctly
+
+Component under test: `/src/pages/TodoListPage.tsx`
+
+Test file: `/src/pages/TodoListPage.test.tsx`
+
+1. When the todo list is fetched successfully, the data content should be displayed correctly.
+2. When fetching the todo list fails, an error message should be displayed.

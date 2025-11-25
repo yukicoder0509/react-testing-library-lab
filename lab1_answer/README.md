@@ -1,73 +1,49 @@
-# React + TypeScript + Vite
+# Example answer for lab1
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Exercise 1: Complete Login Flow
 
-Currently, two official plugins are available:
+Component under test: `/src/components/LoginForm.tsx`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Test file: `/src/components/LoginForm.test.tsx`
 
-## React Compiler
+Test cases:
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+1. Should render login form correctly
+2. Should be able to fill the form fields
+3. Should call login function on form submission
+4. Should navigate to `/todos` on successful login
+5. Should not navigate on failed login
 
-## Expanding the ESLint configuration
+Mock dependencies:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```ts
+const mockLogin = vi.fn();
+vi.mock("../requests/login", () => ({
+  login: (username: string, password: string) => mockLogin(username, password),
+}));
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+const mockNavigate = vi.fn();
+vi.mock("react-router", () => {
+  return {
+    useNavigate: () => mockNavigate,
+  };
+});
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Exercise 2: Ensure Todo List Displays Correctly
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Component under test: `/src/pages/TodoListPage.tsx`
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Test file: `/src/pages/TodoListPage.test.tsx`
+
+1. Should render TodoListPage correctly
+2. Should display error message on fetch failure
+
+Mock dependencies
+
+```ts
+const mockGetTodoList = vi.fn().mockResolvedValue([]);
+vi.mock("../requests/getTodoList", () => ({
+  getTodoList: () => mockGetTodoList(),
+}));
 ```
